@@ -30,16 +30,21 @@ const generateUI = (articles) => {
 };
 
 // News API Call
-const getNews = async () => {
+const getNews = async (category = "general") => {
   container.innerHTML = "";
-  let requestURL = `https://newsapi.org/v2/top-headlines?country=${country}&category=general&apiKey=${apiKey}`;
+  let requestURL = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}`;
 
   // Log the request URL for debugging
   console.log("Request URL:", requestURL);
 
   // Error Handling 
   try {
-    let response = await fetch(requestURL);
+    let response = await fetch(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
     console.log("Response:", response); // Log the response for debugging
 
     if (!response.ok) {
@@ -67,15 +72,21 @@ const selectCategory = (e, category) => {
   option.forEach((element) => {
     element.classList.remove("active");
   });
-  let requestURL = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}`;
   e.target.classList.add("active");
-  getNews();
+  getNews(category);
 }
 
 // Options Button
 const createOptions = () => {
   for (let i of options) {
-    optionsContainer.innerHTML += `<button class="options ${i == "general" ? "active" : ""}" onclick="selectCategory(event, '${i}')">${i}</button>`
+    let button = document.createElement("button");
+    button.classList.add("options");
+    if (i === "general") {
+      button.classList.add("active");
+    }
+    button.textContent = i;
+    button.addEventListener("click", (e) => selectCategory(e, i));
+    optionsContainer.appendChild(button);
   }
 }
 
