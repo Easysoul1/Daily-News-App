@@ -33,7 +33,8 @@ const generateUI = (articles) => {
 // News API Call
 const getNews = async () => {
   container.innerHTML = "";
-  let requestURL = `https://newsapi.org/v2/top-headlines?country=${country}&category=general&apiKey=${apiKey}`;
+  let requestURL = `https://daily-news-app-seven.vercel.app
+.vercel.app/api/news?country=${country}&category=general`;
 
   // Error Handling 
   try {
