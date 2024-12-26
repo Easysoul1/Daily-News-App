@@ -3,7 +3,6 @@ import { apiKey } from './api_keys.js';
 const container = document.querySelector(".container");
 const optionsContainer = document.querySelector(".option_container");
 
-
 // NG for Nigeria, US for United state
 const country = "US";
 const options = ["general", "entertainment", "health", "science", "sport", "technology"];
@@ -33,16 +32,21 @@ const generateUI = (articles) => {
 // News API Call
 const getNews = async () => {
   container.innerHTML = "";
-  let requestURL = `https://daily-news-app-seven.vercel.app
-.vercel.app/api/news?country=${country}&category=general`;
+  let requestURL = `https://newsapi.org/v2/top-headlines?country=${country}&category=general&apiKey=${apiKey}`;
+
+  // Log the request URL for debugging
+  console.log("Request URL:", requestURL);
 
   // Error Handling 
   try {
     let response = await fetch(requestURL);
+    console.log("Response:", response); // Log the response for debugging
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     let data = await response.json();
+    console.log("Data:", data); // Log the data for debugging
 
     if (data.articles && data.articles.length) {
       generateUI(data.articles);
